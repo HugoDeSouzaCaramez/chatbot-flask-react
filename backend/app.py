@@ -1,8 +1,10 @@
-from flask import Flask, jsonify, request, send_from_directory
+from flask import Flask, send_from_directory
+from flask_socketio import SocketIO, emit
 from flask_cors import CORS
 
 app = Flask(__name__, static_folder='../frontend/build', static_url_path='')
 CORS(app)
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet')
 
 opcoes = [
     "Ver saldo",
@@ -26,15 +28,19 @@ respostas = {
 def serve():
     return send_from_directory(app.static_folder, 'index.html')
 
-@app.route('/api/opcoes', methods=['GET'])
-def get_opcoes():
-    return jsonify({"opcoes": opcoes})
+@socketio.on('connect')
+def handle_connect():
+    emit('opcoes', {'opcoes': opcoes})
 
-@app.route('/api/chat', methods=['POST'])
-def chat():
-    data = request.get_json()
-    escolha = data.get('escolha')
-    return jsonify({"resposta": respostas.get(escolha, "Opção inválida")})
+@socketio.on('mensagem')
+def handle_message(data):
+    try:
+        opcao = int(data['texto'])
+        resposta = respostas.get(opcao, "Opção inválida")
+        emit('resposta', {'texto': resposta}, to=data['client_id'])
+    except (ValueError, KeyError):
+        emit('resposta', {'texto': '❌ Opção inválida. Digite um número entre 1 e 6'}, 
+             to=data['client_id'])
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    socketio.run(app, debug=True)
