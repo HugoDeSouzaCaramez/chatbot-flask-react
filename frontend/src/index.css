@@ -1,0 +1,91 @@
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-width: 800px;
+  margin: 0 auto;
+  background: #f0f0f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.mensagens {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background: #e5ddd5;
+}
+
+.mensagem {
+  margin: 10px 0;
+  display: flex;
+}
+
+.mensagem.usuario {
+  justify-content: flex-end;
+}
+
+.balao {
+  max-width: 70%;
+  padding: 10px 15px;
+  border-radius: 7px;
+  word-break: break-word;
+}
+
+.mensagem.bot .balao {
+  background: white;
+  color: #333;
+}
+
+.mensagem.usuario .balao {
+  background: #dcf8c6;
+  color: #333;
+}
+
+.input-container {
+  display: flex;
+  padding: 15px;
+  background: #f0f0f0;
+  border-top: 1px solid #ddd;
+}
+
+.input-container input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+.input-container button {
+  padding: 10px 20px;
+  background: #075e54;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.input-container button:hover {
+  background: #054d44;
+}
+
+/* Scrollbar personalizada */
+.mensagens::-webkit-scrollbar {
+  width: 6px;
+}
+
+.mensagens::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.mensagens::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.mensagens::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
